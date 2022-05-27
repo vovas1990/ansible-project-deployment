@@ -1,5 +1,5 @@
 repos:
-  - repo: https://github.com/vovas1990/ansible-project-deployment.git
+  - repo: https://github.com/ansible-community/ansible-lint.git
     rev: v5.4.0
     hooks:
       - id: ansible-lint
