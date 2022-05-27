@@ -56,7 +56,6 @@
 
 - name: установка DOCKER-COMPOSE
   block:
-
     - name: создание папки для docker-compose
       file:
         path=/usr/local/lib/docker/cli-plugins
@@ -69,20 +68,17 @@
         mode: 0755 # режим файла тоже самое что и sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
   become: true
 
-
 - name: настройка дополнительных пакетов python3
   block:
     - name: установка pip пакетов
       pip:
         name: docker
 
-
-
 - name: завершение установки
   block:
     - name: добавление пользователя в группу docker
       user:
-        name: "{{ansible_user}}"
+        name: "{{ ansible_user }}"
         groups: docker
         append: true
       become: true
