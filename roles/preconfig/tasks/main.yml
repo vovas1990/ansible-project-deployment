@@ -1,0 +1,92 @@
+---
+- name: установка Docker
+  block:
+    - name: добавление universe
+      apt_repository:
+        repo: "deb http://us.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}  universe"
+        state: present
+
+    - name: установка дополнительных пакетов
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+          - python3-pip
+        update-cache: true
+        cache_valid_time: 86400
+
+    - name: создание папки для ключа
+      file:
+        path=/etc/apt/keyrings
+        state=directory
+
+    - name: установка ключа докер
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+        keyring: /etc/apt/keyrings/docker.gpg
+
+    - name: установка стабильного репозиторя докер
+      apt_repository:
+        repo: >
+          deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg]
+          https://download.docker.com/linux/ubuntu
+          {{ ansible_distribution_release }} stable
+        state: present
+        update-cache: true
+        filename: docker
+
+    - name: установка docker-ce
+      apt:
+        name: docker-ce
+        update-cache: true
+
+    - name: Проверка что Docker установлен и презагружен
+      service:
+        name: docker
+        state: restarted
+        enabled: true
+  become: true
+# НА ЭТОМ УСТАНОВКА САМОГО ДОКЕРА ЗАВЕРШЕНА
+
+# УСТАНАВЛИВАЕМ DOCKER-COMPOSE
+
+- name: установка DOCKER-COMPOSE
+  block:
+
+    - name: создание папки для docker-compose
+      file:
+        path=/usr/local/lib/docker/cli-plugins
+        state=directory
+
+    - name: установка docker-compose
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-linux-x86_64 "
+        dest: /usr/local/lib/docker/cli-plugins  # место установки
+        mode: 0755 # режим файла тоже самое что и sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+  become: true
+
+
+- name: настройка дополнительных пакетов python3
+  block:
+    - name: установка pip пакетов
+      pip:
+        name: docker
+
+
+
+- name: завершение установки
+  block:
+    - name: добавление пользователя в группу docker
+      user:
+        name: "{{ansible_user}}"
+        groups: docker
+        append: true
+      become: true
+
+    - name: перезагрузка сервера
+      reboot:
+  become: true
