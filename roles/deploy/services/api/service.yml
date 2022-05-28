@@ -1,23 +1,36 @@
 ---
-- name: "[{{ name }}] Создаем секрет"
-  community.docker.docker_secret:
-    name: "{{ name }}.env"
-    data: "{{ lookup('file', '.env') | b64encode }}"
-    labels:
-      secret: "{{ lookup('file', '.env') | hash('sha1') }}"
-    data_is_b64: true
-    state: present
+- name: "[{{ name }}] конфигурация секрета"
+  block:
+    - name: "[{{ name }}] Создаем секрет"
+      include: "../secretWork.yml"
 
-- name: "[{{ name }}] Выкладываем сервис"
-  community.docker.docker_swarm_service:
-    name: "{{ name }}"
-    image: 192.168.1.61:5000/api:latest
-    state: present
-    publish:
-      - mode: ingress
-        protocol: tcp
-        published_port: 3002
-        target_port: 3000
-    secrets:
-      - secret_name: "{{ name }}.env"
-        filename: "/opt/app/.env"
+
+  rescue:
+    - name: "[{{ name }}] Удаляем сервис"
+      community.docker.docker_swarm_service:
+        name: "{{ name }}"
+        state: absent
+
+
+    - name: "[{{ name }}] Пересоздаем секрет"
+      include: "../secretWork.yml"
+
+      
+
+- name: "[{{ name }}] выкладка сервиса секрет"
+  block:
+    - name: "[{{ name }}] Выкладываем сервис"
+      community.docker.docker_swarm_service:
+        name: "{{ name }}"
+        image: 192.168.1.61:5000/api:latest
+        state: present
+        networks:
+          - name: "{{ networkName }}"
+        publish:
+          - mode: ingress
+            protocol: tcp
+            published_port: 3002
+            target_port: 3000
+        secrets:
+          - secret_name: "{{ name }}.env"
+            filename: "/opt/app/.env"
