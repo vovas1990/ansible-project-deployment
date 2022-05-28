@@ -1,19 +1,6 @@
 ---
 - name: "[{{ name }}] конфигурация секрета"
-  block:
-    - name: "[{{ name }}] Создаем секрет"
-      include: "roles/deploy/services/secretWork.yml"
-
-
-  rescue:
-    - name: "[{{ name }}] Удаляем сервис"
-      community.docker.docker_swarm_service:
-        name: "{{ name }}"
-        state: absent
-
-
-    - name: "[{{ name }}] Пересоздаем секрет"
-      include: "roles/deploy/services/secretWork.yml"
+  include: "roles/deploy/services/secretWorks.yml"
 
 - name: "[{{ name }}] выкладка сервиса секрет"
   block:
