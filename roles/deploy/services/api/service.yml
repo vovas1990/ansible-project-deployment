@@ -2,7 +2,7 @@
 - name: "[{{ name }}] конфигурация секрета"
   block:
     - name: "[{{ name }}] Создаем секрет"
-      include: "../secretWork.yml"
+      include: "roles/deploy/services/secretWork.yml"
 
 
   rescue:
@@ -13,9 +13,7 @@
 
 
     - name: "[{{ name }}] Пересоздаем секрет"
-      include: "../secretWork.yml"
-
-      
+      include: "roles/deploy/services/secretWork.yml"
 
 - name: "[{{ name }}] выкладка сервиса секрет"
   block:
