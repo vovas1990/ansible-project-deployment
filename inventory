@@ -1,6 +1,10 @@
-[cluster]
+[deploy]
 192.168.1.61 ansible_user=vagrant
+
+[managers]
 192.168.1.62 ansible_user=vagrant
 192.168.1.63 ansible_user=vagrant
+
+[workers]
 192.168.1.64 ansible_user=vagrant
 192.168.1.65 ansible_user=vagrant

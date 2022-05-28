@@ -1,0 +1,6 @@
+# ---
+# - name: создание сети
+#  community.docker.docker_network:
+#    name: app_network
+#   driver: overlay
+# - name: выкладка сервисов
