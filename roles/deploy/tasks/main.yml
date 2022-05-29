@@ -1,7 +1,7 @@
 ---
 - name: создание сети
   community.docker.docker_network:
-   name: "{{ networkName }}"
+   name: "{{ network_name }}"
    driver: overlay
 
 - name: выкладка сервисов
