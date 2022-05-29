@@ -1,7 +1,7 @@
 ---
 - name: клонируем репозиторий из githab
   ansible.builtin.git:
-    repo: 'https://github.com/vovas1990/docker-demo.git'
+    repo: 'https://github.com/vovas1990/docker-demo-new.git'
     dest: "{{ git_folder }}"  # куда локально скопировать
     version: block-14 # ветка в githab
 
@@ -18,7 +18,7 @@
     source: build
   loop: "{{ services | difference(none_build_services) }}" # описываем репозитории которые не надо билдить из папки варс . ЭТа строчка не нужна если записать все явно
 
-# - name: Удалям репозиторий
-#   file:
-#     state: absent 
-#     path: "{{ git_folder }}" # удалем скаченый репозиторий с githab 
+- name: Удалям репозиторий
+  file:
+    state: absent 
+    path: "{{ git_folder }}" # удалем скаченый репозиторий с githab 
