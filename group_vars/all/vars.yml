@@ -7,4 +7,22 @@ rmqDefaults:
   - name: AMQP_PASSWORD
     value: "{{rmq.password}}"
   - name: AMQP_HOSTNAME
-    value: rmq   
+    value: rmq
+
+
+
+registry_name: "192.168.1.61:5000/" # местонахождение локального гегистра docker
+
+services:
+  - name: api
+    version: latest
+  # - name: app
+  #   version: latest  
+  # - name: converter
+  #   version: latest
+  - name: rmq
+    version: latest
+
+none_build_services:
+  # - name: rmq
+  #   version: latest

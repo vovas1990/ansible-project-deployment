@@ -3,8 +3,10 @@
   community.docker.docker_network:
    name: "{{ networkName }}"
    driver: overlay
+
 - name: выкладка сервисов
-  include: "roles/deploy/services/{{ item }}/service.yml"
+  include: "roles/deploy/services/{{ item.name }}/service.yml"
   vars:
-    - name: "{{ item }}"
+    - name: "{{ item.name }}"
+    - version: "{{ item.version }}"
   loop: "{{ services }}"
