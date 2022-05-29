@@ -3,7 +3,7 @@
   ansible.builtin.git:
     repo: 'https://github.com/vovas1990/docker-demo.git'
     dest: "{{ git_folder }}"  # куда локально скопировать
-    version: block-7 # ветка в githab
+    version: block-14 # ветка в githab
 
 - name: собираем image
   community.docker.docker_image:

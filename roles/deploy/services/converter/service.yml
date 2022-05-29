@@ -2,13 +2,15 @@
 - name: "[{{ name }}] конфигурация секрета"
   include: "roles/deploy/services/secretWorks.yml"
 
-- name: "[{{ name }}] выкладка сервиса секрет"
+- name: "[{{ name }}] выкладка сервиса "
+
   block:
     - name: "[{{ name }}] Выкладываем сервис"
       community.docker.docker_swarm_service:
         name: "{{ name }}"
         image: "{{ registry_name }}{{ name }}:{{ version }}"
         state: present
+        force_update: true
         networks:
           - name: "{{ network_name }}"
 
