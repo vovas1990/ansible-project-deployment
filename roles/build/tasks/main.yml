@@ -14,7 +14,7 @@
       path: "{{ git_folder }}"  #  где локально лежит скаченый репозиторий 
       dockerfile: "{{ git_folder }}/apps/{{ item.name }}/Dockerfile" # где лежит докер файл для создания имеджа
     source: build
-  loop: "{{ services | diff(none_build_services) }}" # описываем репозитории которые не надо билдить из папки варс . ЭТа строчка не нужна если записать все явно
+  loop: "{{ services | difference(none_build_services) }}" # описываем репозитории которые не надо билдить из папки варс . ЭТа строчка не нужна если записать все явно
 
 - name: Удалям репозиторий
   file:
