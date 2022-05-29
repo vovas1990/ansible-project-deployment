@@ -3,6 +3,7 @@
   include: "roles/deploy/services/secretWorks.yml"
 
 - name: "[{{ name }}] выкладка сервиса "
+
   block:
     - name: "[{{ name }}] Выкладываем сервис"
       community.docker.docker_swarm_service:
